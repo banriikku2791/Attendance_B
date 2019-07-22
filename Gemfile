@@ -1,6 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails',        '~> 5.1.6'
+gem 'rails-i18n' # 国際化対応
+gem 'bcrypt' # ハッシュ化
+gem 'faker' # データ生成
+gem 'bootstrap-sass' # Bootstrap
+gem 'will_paginate' # ページネーション
+gem 'bootstrap-will_paginate' # ページネーションデザイン
 gem 'puma',         '~> 3.7'
 gem 'sass-rails',   '~> 5.0'
 gem 'uglifier',     '>= 1.3.0'
