@@ -51,5 +51,12 @@ class AttendancesController < ApplicationController
     end
 
     # beforeフィルター
-
+    # 管理権限者、または現在ログインしているユーザーを許可します。
+    def admin_or_correct_user
+      #@user
+      unless current_user?(@user) || current_user.admin?
+        flash[:danger] = "編集権限がありません。"
+        redirect_to(root_url)
+      end  
+    end
 end
