@@ -1,7 +1,7 @@
 /* ユーザー情報テーブル */
 
 .user-table {
-  vertical-align: middle;
+  vertical-align: bottom;
   text-align: center;
 }
 
@@ -50,6 +50,11 @@
     vertical-align: middle;
   }  
 }
+
+.user-serch {
+ text-align: right;
+}
+
 
 /* 基本情報編集モーダルウインドウ */
 

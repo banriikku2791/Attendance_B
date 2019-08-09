@@ -1,14 +1,21 @@
 class UsersController < ApplicationController
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
   before_action :correct_user, only: [:edit, :update]
-  before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
+  before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
   before_action :set_one_month, only: :show
 
   def index
     # @users = User.all
-    @users = User.paginate(page: params[:page])
+    @user_key = ""
+    if params[:keyword].nil? 
+      @users = User.paginate(page: params[:page])
+    else
+      # @users = User.where(activated: true).paginate(page: params[:page]).search(params[:keyword])
+      @users = User.paginate(page: params[:page]).search(params[:keyword])
+      @user_key = params[:keyword]
+    end
   end
 
   def show
@@ -65,6 +72,26 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def edit_basic_all
+  end
+
+  def update_basic_all
+
+  # if @user.update_attributes(work_time: Time.current.change(sec: 0)) && @user.update_attributes(basic_time: Time.current.change(sec: 0))
+  # if @user.update_attributes(basic_all_params)
+  # if @user.update_all(basic_time: params[:basic_time], work_time: params[:work_time])
+  # if @user.update(basic_time: Time.current.change(sec: 0), work_time: Time.current.change(sec: 0))
+  # if @user.update_all(basic_time: DateTime.parse("2017/04/25 " && :basic_time && ":00"), work_time: DateTime.parse("2019/08/08 10:00:00"))
+
+    @user = User.all
+    if @user.update_all(basic_time: dchange(bp[:basic_time]), work_time: dchange(bp[:work_time]), updated_at: Time.current.change(sec: 0))
+      flash[:success] = "全ユーザーの指定勤務時間および基本勤務時間を更新しました。"
+    else
+      flash[:danger] = "全ユーザーの指定勤務時間および基本勤務時間の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
+    end
+    redirect_to edit_basic_all_user_path(current_user)
+  end
+
   private
 
     def user_params
@@ -75,6 +102,15 @@ class UsersController < ApplicationController
     def basic_info_params
       params.require(:user).permit(:department, :basic_time, :work_time)
     end
+
+    def bp
+      #params.fetch(:user, {}).permit(:basic_time, :work_time)
+      params.require(:user).permit(:basic_time, :work_time)
+      #  params.permit(:basic_time, :work_time)
+    end # fetch(:user, {}).
+    
+
+
 
     # beforeフィルター
 

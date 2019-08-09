@@ -29,6 +29,16 @@ class ApplicationController < ActionController::Base
   def admin_user
     redirect_to root_url unless current_user.admin?
   end
+  
+  
+  # 日付と時間の結合
+  def dchange(time)
+    require 'date'
+    d = Date.today
+    # d.strftime("%Y/%m/%d")
+    # return (d.strftime("%Y/%m/%d") + " " + time + ":00").to_datetime
+    return DateTime.parse(d.strftime("%Y/%m/%d") + " " + time + ":00") - Rational(9,24)
+  end
 
   # ページ出力前に1ヶ月分のデータの存在を確認・セットします。
   def set_one_month 
