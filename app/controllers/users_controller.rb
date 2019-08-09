@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
   before_action :correct_user, only: [:edit, :update]
+  # before_action :admin_or_correct_user, only: :show
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
   before_action :set_one_month, only: :show
 
@@ -76,13 +77,6 @@ class UsersController < ApplicationController
   end
 
   def update_basic_all
-
-  # if @user.update_attributes(work_time: Time.current.change(sec: 0)) && @user.update_attributes(basic_time: Time.current.change(sec: 0))
-  # if @user.update_attributes(basic_all_params)
-  # if @user.update_all(basic_time: params[:basic_time], work_time: params[:work_time])
-  # if @user.update(basic_time: Time.current.change(sec: 0), work_time: Time.current.change(sec: 0))
-  # if @user.update_all(basic_time: DateTime.parse("2017/04/25 " && :basic_time && ":00"), work_time: DateTime.parse("2019/08/08 10:00:00"))
-
     @user = User.all
     if @user.update_all(basic_time: dchange(bp[:basic_time]), work_time: dchange(bp[:work_time]), updated_at: Time.current.change(sec: 0))
       flash[:success] = "全ユーザーの指定勤務時間および基本勤務時間を更新しました。"
@@ -95,8 +89,7 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      # params.require(:user).permit(:name, :email, :password, :password_confirmation)
-      params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :department, :password)
     end
 
     def basic_info_params
@@ -104,40 +97,7 @@ class UsersController < ApplicationController
     end
 
     def bp
-      #params.fetch(:user, {}).permit(:basic_time, :work_time)
       params.require(:user).permit(:basic_time, :work_time)
-      #  params.permit(:basic_time, :work_time)
-    end # fetch(:user, {}).
-    
-
-
-
-    # beforeフィルター
-
-    # paramsハッシュからユーザーを取得します。
-    #def set_user
-    #  @user = User.find(params[:id])
-    #end
-
-    # ログイン済みのユーザーか確認します。
-    #def logged_in_user
-    #  unless logged_in?
-    #    store_location
-    #    flash[:danger] = "ログインしてください。"
-    #    redirect_to login_url
-    #  end
-    #end
-
-    # アクセスしたユーザーが現在ログインしているユーザーか確認します。
-    #def correct_user
-      # @user = User.find(params[:id])
-      # redirect_to(root_url) unless @user == current_user
-    #  redirect_to(root_url) unless current_user?(@user)
-    #end
-
-    # システム管理権限所有かどうか判定します。
-    #def admin_user
-    #  redirect_to root_url unless current_user.admin?
-    #end
+    end
 
 end
