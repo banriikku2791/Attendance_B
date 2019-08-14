@@ -3,9 +3,11 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td>
-        <%= link_to "←", user_path(date: @first_day.prev_month), class: "btn btn-sm btn-primary" %>
+        <%= link_to "←月", user_path(date: @first_day.prev_month, chenge_mw: "m"), class: "btn btn-sm btn-primary" %>
+        <%= link_to "←週", user_path(date: @first_day.prev_week, chenge_mw: "w"), class: "btn btn-sm btn-primary" %>
         　<%= l(@first_day, format: :middle) %>　時間管理表　
-        <%= link_to "→", user_path(date: @first_day.next_month), class: "btn btn-sm btn-primary" %>
+        <%= link_to "週→", user_path(date: @first_day.next_week, chenge_mw: "w"), class: "btn btn-sm btn-primary" %>
+        <%= link_to "月→", user_path(date: @first_day.next_month, chenge_mw: "m"), class: "btn btn-sm btn-primary" %>
       </td>
       <td>指定勤務時間　<%= format_basic_info(@user.work_time) %></td>
       <td colspan="3">基本時間　<%= format_basic_info(@user.basic_time) %></td>
@@ -24,7 +26,7 @@
 </div>
 
 <div class="btn-users-show">
-  <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(@user, date: @first_day), class: "btn btn-primary" %>
+  <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
 </div>
 
 <div>
