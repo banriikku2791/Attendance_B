@@ -102,3 +102,17 @@ p {
 .modal-dialog-center {
   padding-top: 10%;
 }
+
+/* フッター用 */
+
+.subject-left {
+   font-size: 12px;
+   margin-top: -20px;
+   text-align: left;  /* 文章を左寄せする(※) */
+   float: left;     /* 左端に寄せて、後続を右側へ回り込ませる */
+}
+.subject-right {
+   font-size: 12px;
+   margin-top: -20px;
+   text-align: right; /* 文章を右寄せする */
+}

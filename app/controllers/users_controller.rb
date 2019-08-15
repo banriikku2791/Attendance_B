@@ -5,26 +5,20 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_or_correct_user, only: :show
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :edit_basic_all, :update_basic_all]
-  before_action :set_one_month, only: :show
+  before_action :set_one_month_or_week, only: :show
 
   def index
-    # @users = User.all
     @user_key = ""
     if params[:keyword].nil? 
       @users = User.paginate(page: params[:page])
     else
-      # @users = User.where(activated: true).paginate(page: params[:page]).search(params[:keyword])
       @users = User.paginate(page: params[:page]).search(params[:keyword])
       @user_key = params[:keyword]
     end
   end
 
   def show
-    # @user = User.find(params[:id])
-    # @first_day = Date.current.beginning_of_month
-    # @last_day = @first_day.end_of_month
-    # debugger
-    @worked_sum = @attendances.where.not(started_at: nil).count
+    @worked_sum = @attendances_m.where.not(started_at: nil).count
   end
 
   def new
@@ -43,11 +37,9 @@ class UsersController < ApplicationController
   end
 
   def edit
-    # @user = User.find(params[:id])
   end
 
   def update
-    # @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = "ユーザー情報を更新しました。"
       redirect_to @user

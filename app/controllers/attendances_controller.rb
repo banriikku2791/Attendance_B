@@ -1,14 +1,14 @@
 class AttendancesController < ApplicationController
+
   before_action :set_user, only: [:edit_one_month, :update_one_month]
   before_action :set_user2, only: :update
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :set_one_month, only: :edit_one_month
+  before_action :set_one_month_or_week, only: :edit_one_month
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
   def update
-    #@user = User.find(params[:user_id])
     @attendance = Attendance.find(params[:id])
     # 出勤時間が未登録であることを判定します。
     if @attendance.started_at.nil?
@@ -38,10 +38,10 @@ class AttendancesController < ApplicationController
       end
     end
     flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
-    redirect_to user_url(date: params[:date])
-  rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
-    flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
-    redirect_to attendances_edit_one_month_user_url(date: params[:date])
+    redirect_to user_url(date: params[:date], chenge_mw: params[:chenge_mw])
+    rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
+      flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
+      redirect_to attendances_edit_one_month_user_url(date: params[:date], chenge_mw: params[:chenge_mw])
   end
 
   private
@@ -50,7 +50,5 @@ class AttendancesController < ApplicationController
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
     end
-
-    # beforeフィルター
 
 end
