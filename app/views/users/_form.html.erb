@@ -8,5 +8,7 @@
   <%= f.text_field :department, class: "form-control" %>
   <%= f.label :password, class: "label-#{yield(:class_text)}" %>
   <%= f.password_field :password, class: "form-control" %>
+  <%= f.label :password_confirmation, class: "label-#{yield(:class_text)}" %>
+  <%= f.password_field :password_confirmation, class: "form-control" %>
   <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
 <% end %>

@@ -12,6 +12,7 @@ module AttendancesHelper
 
   # 出勤時間と退勤時間を受け取り、在社時間を計算して返します。
   def working_times(start, finish)
+    #debugger
     w_times = (((finish - start) / 60) / 60.0) - ((finish - start) / 60).div(60)
     if w_times >= 0 && w_times < 0.25
       format("%.2f", ((((finish - start) / 60).div(60))))
