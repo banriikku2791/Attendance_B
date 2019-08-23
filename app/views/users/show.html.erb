@@ -3,7 +3,18 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td>
-        <%= link_to "表示月", user_path(date: @first_day, chenge_mw: "m"), class: "btn btn-sm btn-primary" %>
+        <% if params[:date].nil? %>
+          <%= link_to "初期表示", "#", class: "btn btn-sm btn-primary", disabled: "disabled" %>
+        <% elsif @select_area == "m" &&  @first_day == Date.current.beginning_of_month %>
+          <%= link_to "初期表示", "#", class: "btn btn-sm btn-primary", disabled: "disabled" %>
+        <% else %>
+          <%= link_to "初期表示", user_path, class: "btn btn-sm btn-primary" %>
+        <% end %>
+        <% if @select_area == "w" %>
+          <%= link_to "月切替", user_path(date: @first_day, chenge_mw: "m"), class: "btn btn-sm btn-primary" %>
+        <% else %>
+          <%= link_to "月切替", "#", class: "btn btn-sm btn-primary", disabled: "disabled" %>
+        <% end %>
         <%= link_to "←月", user_path(date: @first_day.prev_month, chenge_mw: "m"), class: "btn btn-sm btn-primary" %>
         <%= link_to "←週", user_path(date: @first_day.prev_week, chenge_mw: "w"), class: "btn btn-sm btn-primary" %>
         　<%= l(@first_day, format: :middle) %>　時間管理表　

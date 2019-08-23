@@ -68,7 +68,8 @@ class ApplicationController < ActionController::Base
       @last_day_m = @last_day
       @select_area = "m"
     end
-
+    # 編集当日の該当月
+    @default_day = Date.current
     one_month_or_week = [*@first_day..@last_day] # 対象の月の日数を代入します。
     
     # ユーザーに紐付く一ヶ月分のレコードを検索し取得します。
